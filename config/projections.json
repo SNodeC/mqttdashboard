@@ -1,0 +1,16 @@
+{
+  "projections": [{
+    "name": "mock_ttn_uplinks",
+    "topic": "v3/mock-lab@ttn/devices/+/up",
+    "table": "ttn_uplinks",
+    "columns": {
+      "application_id": {"json_pointer": "/end_device_ids/application_ids/application_id", "required": true},
+      "device_id": {"json_pointer": "/end_device_ids/device_id", "required": true},
+      "session_id": {"json_pointer": "/uplink_message/session_key_id", "required": true},
+      "frame_counter": {"json_pointer": "/uplink_message/f_cnt", "required": true},
+      "fport": {"json_pointer": "/uplink_message/f_port", "required": true},
+      "ttn_received_at": {"json_pointer": "/received_at", "required": true},
+      "decoded_payload": {"json_pointer": "/uplink_message/decoded_payload", "required": true}
+    }
+  }]
+}

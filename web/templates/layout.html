@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{{ page.title }} · {{ site.title }}</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="module" src="/assets/app.js"></script>
+</head>
+<body>
+  <aside>
+    <a class="brand" href="/">◈ <span>{{ site.title }}</span></a>
+    <p class="eyebrow">{{ site.subtitle }}</p>
+    {% for item in site.navigation %}
+    <a class="nav{% if item.href == path %} active{% endif %}" href="{{ item.href }}">{{ item.label }}</a>
+    {% endfor %}
+    <div class="sidebar-note"><span class="mock-dot"></span>{{ site.notice }}
+      <p>{{ site.intro }}</p>
+    </div>
+    <p class="powered">SNode.C · MQTTSuite · Inja</p>
+  </aside>
+  <main id="overview" data-view="{{ page.view }}"
+        data-application="{% if existsIn(params, "application") %}{{ params.application }}{% endif %}"
+        data-device="{% if existsIn(params, "device") %}{{ params.device }}{% endif %}"
+        data-location="{% if existsIn(params, "location") %}{{ params.location }}{% endif %}">
+    <header>
+      <div><p class="eyebrow">{{ site.subtitle }}</p>
+        <h1 id="page-title">{{ page.title }}</h1>
+        <p class="intro">{{ site.intro }}</p>
+      </div>
+      <span id="sse-status" class="connection" role="status">Connecting</span>
+    </header>
+    <div class="service-status" aria-live="polite">
+      <span id="mqtt-status" class="connection">MQTT connecting</span>
+      <span id="db-status" class="connection">Loading history</span>
+    </div>
+    <section class="summary" aria-label="Overview">
+      <article><p>Observed devices</p><strong id="device-count">0</strong><span>Discovered from stored and live observations</span></article>
+      <article><p>Recent observations</p><strong id="record-count">0</strong><span>Up to 200 matching messages</span></article>
+      <article><p>Latest observation</p><strong id="latest-time">—</strong><span>Device uplink receive time</span></article>
+    </section>
+    <p id="loading" role="status">Loading stored observations…</p>
+    {% block content %}{% endblock %}
+    <noscript>
+      <h2>Stored observations</h2>
+      <p>JavaScript enables live updates and device navigation. Stored records are also available to this template:</p>
+      <ul>{% for record in records %}{% if not existsIn(params, "device") or (record.device_id == params.device and record.application_id == params.application) %}<li>{{ record.device_id }} · FPort {{ record.fport }} · {{ record.received_at }}</li>{% endif %}{% endfor %}</ul>
+    </noscript>
+    <footer>Live receipt does not confirm database storage. Times are shown in your browser’s timezone.</footer>
+  </main>
+</body>
+</html>

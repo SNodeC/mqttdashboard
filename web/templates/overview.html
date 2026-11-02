@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<section aria-labelledby="devices-heading">
+  <div class="section-heading"><div><p class="eyebrow">DEVICE DIRECTORY</p>
+    <h2 id="devices-heading">Observed devices{% if existsIn(params, "location") %} · {{ params.location }}{% endif %}</h2></div>
+    <p class="muted">New devices appear as observations arrive</p>
+  </div>
+  <div id="devices" class="measurements"></div>
+  <div id="empty" class="empty" hidden><h3>No observed devices here yet</h3>
+    <p>This directory lists devices that have sent telemetry.</p></div>
+</section>
+<section class="directory-readings">
+  {% include "readings.html" %}
+</section>
+{% endblock %}

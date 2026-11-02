@@ -1,0 +1,21 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "energy-01"
+  },
+  "received_at": "2026-11-02T12:00:05.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-session-energy",
+    "f_cnt": 1,
+    "f_port": 10,
+    "decoded_payload": {
+      "schema_version": 1,
+      "device_type": "energy",
+      "voltage_v": 24.2,
+      "current_a": 0.6,
+      "power_w": 14.52
+    }
+  }
+}

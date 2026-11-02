@@ -1,0 +1,20 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "node-01"
+  },
+  "received_at": "2026-11-02T12:00:02.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-session-01",
+    "f_cnt": 44,
+    "f_port": 30,
+    "decoded_payload": {
+      "schema_version": 1,
+      "battery_v": 3.82,
+      "uptime_s": 3600,
+      "status": "ok"
+    }
+  }
+}

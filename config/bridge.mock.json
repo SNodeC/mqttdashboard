@@ -1,0 +1,72 @@
+{
+    "bridges": [
+        {
+            "brokers": [
+                {
+                    "disabled": false,
+                    "mqtt": {
+                        "clean_session": true,
+                        "client_id": "dashboard-bridge-upstream",
+                        "keep_alive": 60,
+                        "loop_prevention": false,
+                        "password": "",
+                        "username": "",
+                        "will_message": "",
+                        "will_qos": 0,
+                        "will_retain": false,
+                        "will_topic": ""
+                    },
+                    "network": {
+                        "encryption": "legacy",
+                        "in": {
+                            "host": "127.0.0.1",
+                            "port": 18883
+                        },
+                        "instance_name": "upstream",
+                        "protocol": "in",
+                        "transport": "stream"
+                    },
+                    "prefix": "",
+                    "session_store": "",
+                    "topics": [
+                        {
+                            "qos": 0,
+                            "topic": "v3/mock-lab@ttn/devices/+/up"
+                        }
+                    ]
+                },
+                {
+                    "disabled": false,
+                    "mqtt": {
+                        "clean_session": true,
+                        "client_id": "dashboard-bridge-local",
+                        "keep_alive": 60,
+                        "loop_prevention": false,
+                        "password": "",
+                        "username": "",
+                        "will_message": "",
+                        "will_qos": 0,
+                        "will_retain": false,
+                        "will_topic": ""
+                    },
+                    "network": {
+                        "encryption": "legacy",
+                        "in": {
+                            "host": "127.0.0.1",
+                            "port": 1883
+                        },
+                        "instance_name": "local",
+                        "protocol": "in",
+                        "transport": "stream"
+                    },
+                    "prefix": "",
+                    "session_store": "",
+                    "topics": []
+                }
+            ],
+            "disabled": false,
+            "name": "ttn",
+            "prefix": ""
+        }
+    ]
+}

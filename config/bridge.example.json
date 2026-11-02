@@ -1,0 +1,59 @@
+{
+  "bridges": [
+    {
+      "name": "ttn",
+      "prefix": "",
+      "brokers": [
+        {
+          "network": {
+            "instance_name": "ttn",
+            "protocol": "in",
+            "encryption": "tls",
+            "transport": "stream",
+            "in": {
+              "host": "eu1.cloud.thethings.network",
+              "port": 8883
+            }
+          },
+          "mqtt": {
+            "client_id": "dashboard-bridge-ttn",
+            "clean_session": true,
+            "keep_alive": 60,
+            "username": "mock-lab@ttn",
+            "password": "REPLACE_WITH_TTN_API_KEY",
+            "loop_prevention": false
+          },
+          "prefix": "",
+          "topics": [
+            {
+              "topic": "v3/mock-lab@ttn/devices/+/up",
+              "qos": 0
+            }
+          ]
+        },
+        {
+          "network": {
+            "instance_name": "local",
+            "protocol": "in",
+            "encryption": "legacy",
+            "transport": "stream",
+            "in": {
+              "host": "127.0.0.1",
+              "port": 1883
+            }
+          },
+          "mqtt": {
+            "client_id": "dashboard-bridge-local",
+            "clean_session": true,
+            "keep_alive": 60,
+            "username": "",
+            "password": "",
+            "loop_prevention": false
+          },
+          "prefix": "",
+          "topics": []
+        }
+      ]
+    }
+  ]
+}

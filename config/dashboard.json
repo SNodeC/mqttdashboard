@@ -1,0 +1,16 @@
+{
+  "web_root": "../web",
+  "topic": "v3/mock-lab@ttn/devices/+/up",
+  "client_id": "mock-dashboard",
+  "mqtt_username": "",
+  "mqtt_password": "",
+  "reconcile_seconds": 3,
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "socket": "",
+    "name": "ttn_dashboard",
+    "username": "dashboard_reader",
+    "password": "mock-reader-password"
+  }
+}

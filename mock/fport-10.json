@@ -1,0 +1,19 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "node-01"
+  },
+  "received_at": "2026-11-02T12:00:00.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-session-01",
+    "f_cnt": 42,
+    "f_port": 10,
+    "decoded_payload": {
+      "schema_version": 1,
+      "temperature_c": 21.7,
+      "humidity_pct": 48.2
+    }
+  }
+}

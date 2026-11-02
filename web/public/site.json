@@ -1,0 +1,238 @@
+{
+  "title": "Fieldnotes",
+  "subtitle": "LORAWAN OBSERVATORY",
+  "intro": "Stored observations, followed by live uplinks.",
+  "notice": "Mock data format",
+  "default_profile": "generic",
+  "default_location": "unassigned",
+  "navigation": [
+    {
+      "href": "/",
+      "label": "All devices"
+    },
+    {
+      "href": "/locations/north-lab",
+      "label": "North lab"
+    },
+    {
+      "href": "/locations/south-lab",
+      "label": "South lab"
+    }
+  ],
+  "routes": [
+    {
+      "path": "/",
+      "template": "overview.html",
+      "data": {
+        "view": "overview",
+        "title": "Your LoRaWAN devices.",
+        "profile": "generic"
+      }
+    },
+    {
+      "path": "/locations/:location",
+      "template": "overview.html",
+      "data": {
+        "view": "overview",
+        "title": "Devices by location",
+        "profile": "generic"
+      }
+    },
+    {
+      "path": "/devices/:application/:device",
+      "template": "device.html",
+      "data": {
+        "view": "device",
+        "title": "Device dashboard",
+        "profile": "generic"
+      }
+    },
+    {
+      "path": "/environment/:application/:device",
+      "template": "devices/environment.html",
+      "data": {
+        "view": "device",
+        "title": "Environment dashboard",
+        "profile": "environment"
+      }
+    },
+    {
+      "path": "/energy/:application/:device",
+      "template": "devices/energy.html",
+      "data": {
+        "view": "device",
+        "title": "Energy dashboard",
+        "profile": "energy"
+      }
+    }
+  ],
+  "devices": {
+    "mock-lab/node-01": {
+      "label": "Laboratory node",
+      "profile": "generic",
+      "location": "north-lab"
+    },
+    "mock-lab/climate-01": {
+      "label": "Climate station",
+      "profile": "environment",
+      "location": "north-lab"
+    },
+    "mock-lab/energy-01": {
+      "label": "Solar monitor",
+      "profile": "energy",
+      "location": "south-lab"
+    }
+  },
+  "profiles": {
+    "generic": {
+      "label": "LoRaWAN device",
+      "route": "/devices/:application/:device",
+      "ports": {
+        "10": {
+          "label": "Environment",
+          "metrics": {
+            "temperature_c": [
+              "Temperature",
+              "\u00b0C"
+            ],
+            "humidity_pct": [
+              "Humidity",
+              "%"
+            ]
+          }
+        },
+        "20": {
+          "label": "Electrical",
+          "metrics": {
+            "voltage_v": [
+              "Voltage",
+              "V"
+            ],
+            "current_a": [
+              "Current",
+              "A"
+            ],
+            "power_w": [
+              "Power",
+              "W"
+            ]
+          }
+        },
+        "30": {
+          "label": "Device status",
+          "metrics": {
+            "battery_v": [
+              "Battery",
+              "V"
+            ],
+            "uptime_s": [
+              "Uptime",
+              "s"
+            ],
+            "status": [
+              "Status",
+              ""
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "label": "Environment sensor",
+      "route": "/environment/:application/:device",
+      "ports": {
+        "10": {
+          "label": "Environment",
+          "metrics": {
+            "temperature_c": [
+              "Temperature",
+              "\u00b0C"
+            ],
+            "humidity_pct": [
+              "Humidity",
+              "%"
+            ]
+          }
+        },
+        "30": {
+          "label": "Device status",
+          "metrics": {
+            "battery_v": [
+              "Battery",
+              "V"
+            ],
+            "uptime_s": [
+              "Uptime",
+              "s"
+            ],
+            "status": [
+              "Status",
+              ""
+            ]
+          }
+        }
+      }
+    },
+    "energy": {
+      "label": "Energy meter",
+      "route": "/energy/:application/:device",
+      "ports": {
+        "10": {
+          "label": "Electrical",
+          "metrics": {
+            "voltage_v": [
+              "Voltage",
+              "V"
+            ],
+            "current_a": [
+              "Current",
+              "A"
+            ],
+            "power_w": [
+              "Power",
+              "W"
+            ]
+          }
+        },
+        "20": {
+          "label": "Electrical",
+          "metrics": {
+            "voltage_v": [
+              "Voltage",
+              "V"
+            ],
+            "current_a": [
+              "Current",
+              "A"
+            ],
+            "power_w": [
+              "Power",
+              "W"
+            ]
+          }
+        },
+        "30": {
+          "label": "Device status",
+          "metrics": {
+            "battery_v": [
+              "Battery",
+              "V"
+            ],
+            "uptime_s": [
+              "Uptime",
+              "s"
+            ],
+            "status": [
+              "Status",
+              ""
+            ]
+          }
+        }
+      }
+    }
+  },
+  "hidden_fields": [
+    "schema_version",
+    "device_type"
+  ]
+}

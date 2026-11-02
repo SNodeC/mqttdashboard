@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Provisional mock TTN uplink (not the final device protocol)",
+  "type": "object",
+  "required": [
+    "end_device_ids",
+    "received_at",
+    "uplink_message"
+  ],
+  "properties": {
+    "end_device_ids": {
+      "type": "object",
+      "required": [
+        "application_ids",
+        "device_id"
+      ],
+      "properties": {
+        "application_ids": {
+          "type": "object",
+          "required": [
+            "application_id"
+          ],
+          "properties": {
+            "application_id": {
+              "const": "mock-lab"
+            }
+          }
+        },
+        "device_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "uplink_message": {
+      "type": "object",
+      "required": [
+        "session_key_id",
+        "f_cnt",
+        "f_port",
+        "decoded_payload"
+      ],
+      "properties": {
+        "session_key_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "f_cnt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "f_port": {
+          "enum": [
+            10,
+            20,
+            30
+          ]
+        },
+        "decoded_payload": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "f_port": {
+                "const": 10
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decoded_payload": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "schema_version",
+                      "temperature_c",
+                      "humidity_pct"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "schema_version": {
+                        "const": 1
+                      },
+                      "temperature_c": {
+                        "type": "number"
+                      },
+                      "humidity_pct": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "device_type": {
+                        "enum": [
+                          "generic",
+                          "environment",
+                          "energy"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "schema_version",
+                      "voltage_v",
+                      "current_a",
+                      "power_w",
+                      "device_type"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "schema_version": {
+                        "const": 1
+                      },
+                      "voltage_v": {
+                        "type": "number"
+                      },
+                      "current_a": {
+                        "type": "number"
+                      },
+                      "power_w": {
+                        "type": "number"
+                      },
+                      "device_type": {
+                        "const": "energy"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "f_port": {
+                "const": 20
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decoded_payload": {
+                "type": "object",
+                "required": [
+                  "schema_version",
+                  "voltage_v",
+                  "current_a",
+                  "power_w"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "voltage_v": {
+                    "type": "number"
+                  },
+                  "current_a": {
+                    "type": "number"
+                  },
+                  "power_w": {
+                    "type": "number"
+                  },
+                  "device_type": {
+                    "enum": [
+                      "generic",
+                      "environment",
+                      "energy"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "f_port": {
+                "const": 30
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decoded_payload": {
+                "type": "object",
+                "required": [
+                  "schema_version",
+                  "battery_v",
+                  "uptime_s",
+                  "status"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "battery_v": {
+                    "type": "number"
+                  },
+                  "uptime_s": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "status": {
+                    "enum": [
+                      "ok",
+                      "warning",
+                      "fault"
+                    ]
+                  },
+                  "device_type": {
+                    "enum": [
+                      "generic",
+                      "environment",
+                      "energy"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

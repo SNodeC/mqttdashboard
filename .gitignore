@@ -1,0 +1,4 @@
+/build/
+/checkouts/
+/config/*.local.*
+__pycache__/

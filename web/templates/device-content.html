@@ -1,0 +1,9 @@
+<section class="device-intro">
+  <a class="back-link" href="/">← Device directory</a>
+  <h2 id="device-title">{{ params.device }}</h2>
+  <p class="muted">Application {{ params.application }}</p>
+  <p>A reusable dashboard for this device’s observed FPorts.</p>
+</section>
+<div id="empty" class="empty" hidden><h3>No observations for this device yet</h3>
+  <p>Keep this page open; live observations will appear automatically.</p></div>
+{% include "readings.html" %}
