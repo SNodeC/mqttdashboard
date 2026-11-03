@@ -5,6 +5,7 @@ No installed database, existing broker or TTN account is accessed.
 """
 import argparse
 import copy
+from datetime import datetime, timedelta, timezone
 import http.client
 import json
 import os
@@ -138,6 +139,7 @@ class Pipeline(unittest.TestCase):
         cls.store = cls.start_store()
         cls.fixtures = [json.loads((ROOT / f"mock/fport-{port}.json").read_text()) for port in [10, 20, 30]]
         cls.fixtures.extend(json.loads((ROOT / f"mock/{kind}-device.json").read_text()) for kind in ["climate", "energy"])
+        cls.fixtures.extend(json.loads((ROOT / f"mock/solar-{port}.json").read_text()) for port in [10, 20, 30, 40, 50])
         # Both bridge endpoints must be online before publishing the first mock message.
         wait_until(lambda: cls.bridge_ready(), "bridge forwarding and MQTTStore projection")
         for message in cls.fixtures:
@@ -293,9 +295,9 @@ class Pipeline(unittest.TestCase):
     def test_editable_web_files_and_history_api(self):
         code, html, headers = self.http("/")
         self.assertEqual(code, 200)
-        self.assertIn(b"Fieldnotes", html)
+        self.assertIn(b"Our devices", html)
         self.assertEqual(headers["Cache-Control"], "no-store")
-        for path, content in [("/assets/style.css", b".measurements"), ("/assets/app.js", b"EventSource"), ("/assets/state.js", b"function merge")]:
+        for path, content in [("/assets/style.css", b".dashboard-grid"), ("/assets/app.js", b"EventSource"), ("/assets/state.js", b"function merge")]:
             self.assertIn(content, self.http(path)[1])
         history = json.loads(self.http("/api/history")[1])
         self.assertEqual(history["limit"], 200)
@@ -310,8 +312,8 @@ class Pipeline(unittest.TestCase):
 
     def test_external_routes_nested_inheritance_and_escaped_parameters(self):
         for path, text in [('/devices/mock-lab/node-01', b'Device dashboard'),
-                           ('/environment/mock-lab/climate-01', b'Environment dashboard: temperature'),
-                           ('/energy/mock-lab/energy-01', b'Energy dashboard: electrical'),
+                           ('/environment/mock-lab/climate-01', b'Device dashboard'),
+                           ('/energy/mock-lab/energy-01', b'Device dashboard'),
                            ('/locations/north-lab', b'north-lab')]:
             code, body, headers = self.http(path)
             self.assertEqual(code, 200)
@@ -326,6 +328,44 @@ class Pipeline(unittest.TestCase):
                 self.http(path)
             self.assertEqual(error.exception.code, 404)
             error.exception.close()
+
+    def test_v2_pages_and_mock_projection(self):
+        base = '/devices/mock-lab/solar-01'
+        for suffix, text in [('/network', b'Where does a message go?'),
+                             ('/lorawan', b'Last payload (decoded)'),
+                             ('/learn/lorawan', b'Frame counter'),
+                             *[('/learn/' + metric, metric.capitalize().encode())
+                               for metric in ['voltage', 'current', 'power', 'battery', 'temperature']]]:
+            with self.subTest(path=suffix):
+                body = self.http(base + suffix)[1]
+                self.assertIn(text, body)
+                self.assertNotIn(b'{%', body)
+                self.assertIn(b'data-value="battery"', body)
+        snapshot = self.events().get('snapshot')
+        solar = {row['fport']: row for row in snapshot['records'] if row['device_id'] == 'solar-01'}
+        self.assertEqual(set(solar), {10, 20, 30, 40, 50})
+        self.assertEqual(solar[30]['values']['battery_pct'], 82)
+        self.assertFalse(solar[40]['values']['gps']['fix'])
+        self.assertEqual(solar[50]['values']['lorawan']['rssi_dbm'], -85)
+        self.assertTrue(all(row['stored'] for row in solar.values()))
+
+    def test_snapshot_retains_chart_window_beyond_recent_200(self):
+        now = datetime.now(timezone.utc)
+        try:
+            for index in range(220):
+                message = copy.deepcopy(self.fixtures[-4])
+                message['end_device_ids']['device_id'] = 'chart-window'
+                message['uplink_message']['f_cnt'] = 60000 + index
+                message['received_at'] = (now - timedelta(seconds=220 - index)).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                self.publish(message)
+            wait_until(lambda: int(self.sql("SELECT COUNT(*) FROM ttn_dashboard.ttn_uplinks WHERE device_id='chart-window'")) == 220,
+                       'all chart observations persisted')
+            snapshot = self.events().get('snapshot')
+            chart = [row for row in snapshot['records'] if row['device_id'] == 'chart-window']
+            self.assertEqual(len(chart), 220)
+            self.assertTrue(all(row['stored'] for row in chart))
+        finally:
+            self.sql("DELETE FROM ttn_dashboard.ttn_uplinks WHERE device_id='chart-window'")
 
     # The owner explicitly accepts the upstream middleware's lack of confinement.
     # Keep this check executable to record the accepted security limitation.

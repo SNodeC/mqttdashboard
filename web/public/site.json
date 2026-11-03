@@ -1,8 +1,8 @@
 {
-  "title": "Fieldnotes",
-  "subtitle": "LORAWAN OBSERVATORY",
-  "intro": "Stored observations, followed by live uplinks.",
-  "notice": "Mock data format",
+  "title": "Our devices",
+  "subtitle": "Pretoria community",
+  "intro": "Choose a device",
+  "notice": "Demo mode",
   "default_profile": "generic",
   "default_location": "unassigned",
   "navigation": [
@@ -25,8 +25,10 @@
       "template": "overview.html",
       "data": {
         "view": "overview",
-        "title": "Your LoRaWAN devices.",
-        "profile": "generic"
+        "title": "Our devices",
+        "header_title": "Home",
+        "header_variant": "large",
+        "subtitle": "Choose a device"
       }
     },
     {
@@ -35,7 +37,9 @@
       "data": {
         "view": "overview",
         "title": "Devices by location",
-        "profile": "generic"
+        "header_title": "Home",
+        "header_variant": "large",
+        "subtitle": "Choose a device"
       }
     },
     {
@@ -43,8 +47,10 @@
       "template": "device.html",
       "data": {
         "view": "device",
-        "title": "Device dashboard",
-        "profile": "generic"
+        "title": "Dashboard",
+        "header_title": "Dashboard",
+        "header_variant": "large",
+        "subtitle": "Pretoria community"
       }
     },
     {
@@ -52,8 +58,10 @@
       "template": "devices/environment.html",
       "data": {
         "view": "device",
-        "title": "Environment dashboard",
-        "profile": "environment"
+        "title": "Dashboard",
+        "header_title": "Dashboard",
+        "header_variant": "large",
+        "subtitle": "Pretoria community"
       }
     },
     {
@@ -61,8 +69,103 @@
       "template": "devices/energy.html",
       "data": {
         "view": "device",
-        "title": "Energy dashboard",
-        "profile": "energy"
+        "title": "Dashboard",
+        "header_title": "Dashboard",
+        "header_variant": "large",
+        "subtitle": "Pretoria community"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/network",
+      "template": "network.html",
+      "data": {
+        "view": "network",
+        "title": "How our device talks to the network.",
+        "header_title": "Network information",
+        "header_variant": "compact",
+        "subtitle": "LoRaWAN · TTN"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/lorawan",
+      "template": "lorawan.html",
+      "data": {
+        "view": "details",
+        "title": "Detailed LoRaWAN information",
+        "header_title": "LoRaWAN details",
+        "header_variant": "large",
+        "subtitle": "LoRaWAN guide"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/learn/lorawan",
+      "template": "lorawan-words.html",
+      "data": {
+        "view": "words",
+        "title": "What do these words mean?",
+        "header_title": "Learn",
+        "header_variant": "compact",
+        "subtitle": "LoRaWAN guide"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/learn/voltage",
+      "template": "learn.html",
+      "data": {
+        "view": "learn",
+        "title": "What does voltage mean?",
+        "header_title": "Learn",
+        "header_variant": "compact",
+        "subtitle": "Dashboard guide",
+        "metric": "voltage"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/learn/current",
+      "template": "learn.html",
+      "data": {
+        "view": "learn",
+        "title": "What does current mean?",
+        "header_title": "Learn",
+        "header_variant": "compact",
+        "subtitle": "Dashboard guide",
+        "metric": "current"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/learn/power",
+      "template": "learn.html",
+      "data": {
+        "view": "learn",
+        "title": "What does power mean?",
+        "header_title": "Learn",
+        "header_variant": "compact",
+        "subtitle": "Dashboard guide",
+        "metric": "power"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/learn/battery",
+      "template": "learn.html",
+      "data": {
+        "view": "learn",
+        "title": "What does battery charge mean?",
+        "header_title": "Learn",
+        "header_variant": "compact",
+        "subtitle": "Dashboard guide",
+        "metric": "battery"
+      }
+    },
+    {
+      "path": "/devices/:application/:device/learn/temperature",
+      "template": "learn.html",
+      "data": {
+        "view": "learn",
+        "title": "What does temperature mean?",
+        "header_title": "Learn",
+        "header_variant": "compact",
+        "subtitle": "Dashboard guide",
+        "metric": "temperature"
       }
     }
   ],
@@ -81,6 +184,11 @@
       "label": "Solar monitor",
       "profile": "energy",
       "location": "south-lab"
+    },
+    "mock-lab/solar-01": {
+      "label": "Device 1",
+      "profile": "solar",
+      "location": "Pretoria community"
     }
   },
   "profiles": {
@@ -93,7 +201,7 @@
           "metrics": {
             "temperature_c": [
               "Temperature",
-              "\u00b0C"
+              "°C"
             ],
             "humidity_pct": [
               "Humidity",
@@ -132,10 +240,49 @@
             "status": [
               "Status",
               ""
+            ],
+            "battery_pct": [
+              "Battery charge",
+              "%"
             ]
           }
         }
-      }
+      },
+      "roles": {
+        "voltage": {
+          "fport": 20,
+          "field": "voltage_v"
+        },
+        "current": {
+          "fport": 20,
+          "field": "current_a"
+        },
+        "power": {
+          "fport": 20,
+          "field": "power_w"
+        },
+        "temperature": {
+          "fport": 10,
+          "field": "temperature_c"
+        },
+        "battery": {
+          "fport": 30,
+          "field": "battery_pct"
+        },
+        "gps": {
+          "fport": 40,
+          "field": "gps"
+        },
+        "radio": {
+          "fport": 50,
+          "field": "lorawan"
+        }
+      },
+      "voltage_range": [
+        0,
+        30
+      ],
+      "primary_metric": "voltage"
     },
     "environment": {
       "label": "Environment sensor",
@@ -146,7 +293,7 @@
           "metrics": {
             "temperature_c": [
               "Temperature",
-              "\u00b0C"
+              "°C"
             ],
             "humidity_pct": [
               "Humidity",
@@ -168,10 +315,49 @@
             "status": [
               "Status",
               ""
+            ],
+            "battery_pct": [
+              "Battery charge",
+              "%"
             ]
           }
         }
-      }
+      },
+      "roles": {
+        "voltage": {
+          "fport": 20,
+          "field": "voltage_v"
+        },
+        "current": {
+          "fport": 20,
+          "field": "current_a"
+        },
+        "power": {
+          "fport": 20,
+          "field": "power_w"
+        },
+        "temperature": {
+          "fport": 10,
+          "field": "temperature_c"
+        },
+        "battery": {
+          "fport": 30,
+          "field": "battery_pct"
+        },
+        "gps": {
+          "fport": 40,
+          "field": "gps"
+        },
+        "radio": {
+          "fport": 50,
+          "field": "lorawan"
+        }
+      },
+      "voltage_range": [
+        0,
+        30
+      ],
+      "primary_metric": "temperature"
     },
     "energy": {
       "label": "Energy meter",
@@ -225,14 +411,261 @@
             "status": [
               "Status",
               ""
+            ],
+            "battery_pct": [
+              "Battery charge",
+              "%"
             ]
           }
         }
-      }
+      },
+      "roles": {
+        "voltage": {
+          "fport": 10,
+          "field": "voltage_v"
+        },
+        "current": {
+          "fport": 10,
+          "field": "current_a"
+        },
+        "power": {
+          "fport": 10,
+          "field": "power_w"
+        },
+        "temperature": {
+          "fport": 10,
+          "field": "temperature_c"
+        },
+        "battery": {
+          "fport": 30,
+          "field": "battery_pct"
+        },
+        "gps": {
+          "fport": 40,
+          "field": "gps"
+        },
+        "radio": {
+          "fport": 50,
+          "field": "lorawan"
+        }
+      },
+      "voltage_range": [
+        0,
+        30
+      ],
+      "primary_metric": "voltage"
+    },
+    "solar": {
+      "label": "Solar monitor",
+      "route": "/energy/:application/:device",
+      "ports": {
+        "10": {
+          "label": "Environment",
+          "metrics": {
+            "temperature_c": [
+              "Environment temperature",
+              "°C"
+            ],
+            "humidity_pct": [
+              "Humidity",
+              "%"
+            ]
+          }
+        },
+        "20": {
+          "label": "Electrical",
+          "metrics": {
+            "voltage_v": [
+              "Solar panel voltage",
+              "V"
+            ],
+            "current_a": [
+              "Current",
+              "A"
+            ],
+            "power_w": [
+              "Power",
+              "W"
+            ]
+          }
+        },
+        "30": {
+          "label": "Device status",
+          "metrics": {
+            "battery_v": [
+              "Battery",
+              "V"
+            ],
+            "uptime_s": [
+              "Uptime",
+              "s"
+            ],
+            "status": [
+              "Status",
+              ""
+            ],
+            "battery_pct": [
+              "Battery charge",
+              "%"
+            ]
+          }
+        },
+        "40": {
+          "label": "GPS",
+          "metrics": {}
+        },
+        "50": {
+          "label": "LoRaWAN",
+          "metrics": {}
+        }
+      },
+      "roles": {
+        "voltage": {
+          "fport": 20,
+          "field": "voltage_v"
+        },
+        "current": {
+          "fport": 20,
+          "field": "current_a"
+        },
+        "power": {
+          "fport": 20,
+          "field": "power_w"
+        },
+        "temperature": {
+          "fport": 10,
+          "field": "temperature_c"
+        },
+        "battery": {
+          "fport": 30,
+          "field": "battery_pct"
+        },
+        "gps": {
+          "fport": 40,
+          "field": "gps"
+        },
+        "radio": {
+          "fport": 50,
+          "field": "lorawan"
+        }
+      },
+      "voltage_range": [
+        0,
+        14
+      ],
+      "primary_metric": "voltage"
     }
   },
-  "hidden_fields": [
-    "schema_version",
-    "device_type"
+  "message_timeout_seconds": 180,
+  "chart": {
+    "minutes": 12,
+    "buckets": 12
+  },
+  "retention": {
+    "recent": 200,
+    "window_seconds": 720
+  },
+  "onboarding": {
+    "title": "Add a device",
+    "body": "Devices appear automatically after their first uplink. Configure your device to send to the connected TTN application, then wait for its first message. No registration on this page is required."
+  },
+  "lessons": {
+    "voltage": {
+      "label": "Voltage",
+      "title": "What does voltage mean?",
+      "explanation": "Voltage is the push of electricity.",
+      "points": [
+        "Measured in volts (V).",
+        "Like water pressure in a pipe.",
+        "More push moves electricity more easily."
+      ],
+      "caption": "Taller water means a stronger push.",
+      "question": "What happens to the push when the battery runs low?",
+      "icon": "voltage-icon-bolt.svg",
+      "point_icons": [
+        "voltage-icon-info.svg",
+        "voltage-icon-drop.svg",
+        "voltage-icon-bolt1.svg"
+      ]
+    },
+    "current": {
+      "label": "Current",
+      "title": "What does current mean?",
+      "explanation": "Current is how much electricity flows.",
+      "points": [
+        "Measured in amps (A).",
+        "Like how much water flows in a pipe.",
+        "More lights on means more current."
+      ],
+      "caption": "More drops flowing means more current.",
+      "question": "What happens to the current when we turn on another light?",
+      "icon": "voltage-icon-flow.svg",
+      "point_icons": [
+        "current-icon-info.svg",
+        "current-icon-flow1.svg",
+        "current-icon-bulb.svg"
+      ]
+    },
+    "power": {
+      "label": "Power",
+      "title": "What does power mean?",
+      "explanation": "Power shows how fast energy is used.",
+      "points": [
+        "Measured in watts (W).",
+        "Power = voltage × current.",
+        "More power empties the battery faster."
+      ],
+      "caption": "Voltage and current work together.",
+      "question": "Which uses more power: one light or three lights?",
+      "icon": "voltage-icon-sun.svg",
+      "point_icons": [
+        "power-icon-info.svg",
+        "power-icon-times.svg",
+        "power-icon-battery1.svg"
+      ]
+    },
+    "battery": {
+      "label": "Battery charge",
+      "title": "What does battery charge mean?",
+      "explanation": "Battery charge shows how full the battery is.",
+      "points": [
+        "Shown as a percentage (%).",
+        "Like the fuel gauge in a car.",
+        "A fuller battery lasts longer."
+      ],
+      "caption": "The battery level is an estimate.",
+      "question": "How long could the battery last if we use more power?",
+      "icon": "voltage-icon-battery.svg",
+      "point_icons": [
+        "battery-icon-info.svg",
+        "battery-icon-battery1.svg",
+        "battery-icon-clock.svg"
+      ]
+    },
+    "temperature": {
+      "label": "Temperature",
+      "title": "What does temperature mean?",
+      "explanation": "Temperature shows how hot something is.",
+      "points": [
+        "Measured in degrees Celsius (°C).",
+        "Too hot can damage the battery.",
+        "Panels get warm in the sun."
+      ],
+      "caption": "The higher the line, the hotter it is.",
+      "question": "Why might the temperature rise on a sunny day?",
+      "icon": "voltage-icon-therm.svg",
+      "point_icons": [
+        "temperature-icon-info.svg",
+        "temperature-icon-alert.svg",
+        "temperature-icon-sun1.svg"
+      ]
+    }
+  },
+  "lesson_order": [
+    "voltage",
+    "current",
+    "power",
+    "battery",
+    "temperature"
   ]
 }

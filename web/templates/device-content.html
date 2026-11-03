@@ -1,9 +1,31 @@
-<section class="device-intro">
-  <a class="back-link" href="/">← Device directory</a>
-  <h2 id="device-title">{{ params.device }}</h2>
-  <p class="muted">Application {{ params.application }}</p>
-  <p>A reusable dashboard for this device’s observed FPorts.</p>
+<span class="sr-only" id="device-title">{{ params.device }}</span>
+<section class="dashboard-grid" aria-label="Device dashboard">
+  <article class="voltage-card">
+    <a class="metric-label" data-link="primary" href="/" aria-label="Learn about this measurement"><span class="icon-round primary-symbol">V</span><span data-primary-label>Voltage</span></a>
+    <div class="primary-reading"><strong data-primary-value>—</strong><span data-primary-unit>V</span></div>
+    <progress id="voltage-gauge" value="0" max="100" aria-label="Measurement within configured range"></progress>
+    <div class="range-labels"><span data-range-min>0 V min</span><span data-range-max>14 V max</span></div>
+    <div class="chart-section"><p>Last <span data-chart-minutes>12</span> minutes:</p><div id="chart" class="voltage-chart" role="img" aria-label="Measurement history"></div><div class="range-labels"><span><span data-chart-minutes>12</span> min ago</span><span>now</span></div><span id="chart-coverage" class="chart-coverage"></span></div>
+  </article>
+  <div class="dashboard-right">
+    <p class="warning" id="gps-warning"><img src="/assets/images/dashboard-icon-alert.svg" alt=""><span>GPS location cannot be retrieved. Make sure the device is outside.</span></p>
+    <section class="metric-grid" aria-label="Current readings">
+      <a class="metric-card" data-link="current" href="/"><span class="icon-round metric-letter">A</span><p>Current</p><div><strong data-value="current">—</strong><span>A</span></div></a>
+      <a class="metric-card" data-link="power" href="/"><span class="icon-round metric-letter">W</span><p>Power</p><div><strong data-value="power">—</strong><span>W</span></div></a>
+      <a class="metric-card" data-link="battery" href="/"><span class="icon-round"><img src="/assets/images/dashboard-icon-battery.svg" alt=""></span><p>Battery charge</p><div><strong data-value="battery">—</strong><span>%</span></div></a>
+      <a class="metric-card" data-link="temperature" href="/"><span class="icon-round"><img src="/assets/images/dashboard-icon-therm.svg" alt=""></span><p data-temperature-label>Environment temperature</p><div><strong data-value="temperature">—</strong><span>°C</span></div></a>
+    </section>
+    <div class="connectivity-grid">
+      <article class="panel gps-card">
+        <div class="panel-heading"><h2><span class="icon-round"><img src="/assets/images/dashboard-icon-pin.svg" alt=""></span>GPS location</h2><span class="hint"><img src="/assets/images/dashboard-icon-info.svg" alt="">Device must be outside</span></div>
+        <div class="map-illustration" role="img" aria-label="Illustrative location map, not a geographic map"><span class="park park-one"></span><span class="park park-two"></span><span class="road horizontal"></span><span class="road vertical"></span><span class="street"></span><img class="position-ring" src="/assets/images/dashboard-position-ring.svg" alt=""><img class="position-pin" src="/assets/images/dashboard-pin.svg" alt=""></div>
+        <strong id="coordinates">No known location</strong><p id="gps-age" class="muted">No GPS observation</p>
+      </article>
+      <article class="panel lorawan-card">
+        <div class="panel-heading"><h2><span class="icon-round"><img src="/assets/images/dashboard-icon-wifi.svg" alt=""></span>LoRaWAN</h2><a class="hint" data-link="network" href="/"><img src="/assets/images/dashboard-icon-info.svg" alt="">Learn about the connection</a></div>
+        <dl class="data-rows"><div><dt>Network</dt><dd><span data-radio="network">—</span> · <span data-radio="device_class">—</span></dd></div><div><dt>Communication</dt><dd data-device-status>—</dd></div><div><dt>Last message</dt><dd data-age>—</dd></div><div><dt>Signal quality</dt><dd><span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-signal>Unknown</span></dd></div><div><dt>Gateway</dt><dd data-radio="gateway_id">—</dd></div></dl>
+        <a class="button soft" data-link="lorawan" href="/">View detailed information<img src="/assets/images/dashboard-icon-next.svg" alt=""></a>
+      </article>
+    </div>
+  </div>
 </section>
-<div id="empty" class="empty" hidden><h3>No observations for this device yet</h3>
-  <p>Keep this page open; live observations will appear automatically.</p></div>
-{% include "readings.html" %}

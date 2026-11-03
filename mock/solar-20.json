@@ -1,0 +1,21 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "solar-01"
+  },
+  "received_at": "2026-11-03T12:08:02.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-solar-session",
+    "f_cnt": 20,
+    "f_port": 20,
+    "decoded_payload": {
+      "schema_version": 1,
+      "device_type": "solar",
+      "voltage_v": 12.6,
+      "current_a": 3.2,
+      "power_w": 40.32
+    }
+  }
+}

@@ -9,45 +9,44 @@
   <script type="module" src="/assets/app.js"></script>
 </head>
 <body>
-  <aside>
-    <a class="brand" href="/">◈ <span>{{ site.title }}</span></a>
-    <p class="eyebrow">{{ site.subtitle }}</p>
-    {% for item in site.navigation %}
-    <a class="nav{% if item.href == path %} active{% endif %}" href="{{ item.href }}">{{ item.label }}</a>
-    {% endfor %}
-    <div class="sidebar-note"><span class="mock-dot"></span>{{ site.notice }}
-      <p>{{ site.intro }}</p>
-    </div>
-    <p class="powered">SNode.C · MQTTSuite · Inja</p>
-  </aside>
-  <main id="overview" data-view="{{ page.view }}"
-        data-application="{% if existsIn(params, "application") %}{{ params.application }}{% endif %}"
-        data-device="{% if existsIn(params, "device") %}{{ params.device }}{% endif %}"
-        data-location="{% if existsIn(params, "location") %}{{ params.location }}{% endif %}">
-    <header>
-      <div><p class="eyebrow">{{ site.subtitle }}</p>
-        <h1 id="page-title">{{ page.title }}</h1>
-        <p class="intro">{{ site.intro }}</p>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="screen {{ page.header_variant }}" data-view="{{ page.view }}">
+    {% include "partials/header.html" %}
+    <main id="content" data-view="{{ page.view }}"
+          data-metric="{% if existsIn(page, "metric") %}{{ page.metric }}{% endif %}"
+          data-application="{% if existsIn(params, "application") %}{{ params.application }}{% endif %}"
+          data-device="{% if existsIn(params, "device") %}{{ params.device }}{% endif %}"
+          data-location="{% if existsIn(params, "location") %}{{ params.location }}{% endif %}">
+      <div class="page-heading">
+        <div><h1>{{ page.title }}</h1><p class="subtitle">{{ page.subtitle }}{% if existsIn(params, "location") %} · {{ params.location }}{% endif %}</p></div>
+        <span class="chip demo">{{ site.notice }}</span>
       </div>
-      <span id="sse-status" class="connection" role="status">Connecting</span>
-    </header>
-    <div class="service-status" aria-live="polite">
-      <span id="mqtt-status" class="connection">MQTT connecting</span>
-      <span id="db-status" class="connection">Loading history</span>
-    </div>
-    <section class="summary" aria-label="Overview">
-      <article><p>Observed devices</p><strong id="device-count">0</strong><span>Discovered from stored and live observations</span></article>
-      <article><p>Recent observations</p><strong id="record-count">0</strong><span>Up to 200 matching messages</span></article>
-      <article><p>Latest observation</p><strong id="latest-time">—</strong><span>Device uplink receive time</span></article>
-    </section>
-    <p id="loading" role="status">Loading stored observations…</p>
-    {% block content %}{% endblock %}
-    <noscript>
-      <h2>Stored observations</h2>
-      <p>JavaScript enables live updates and device navigation. Stored records are also available to this template:</p>
-      <ul>{% for record in records %}{% if not existsIn(params, "device") or (record.device_id == params.device and record.application_id == params.application) %}<li>{{ record.device_id }} · FPort {{ record.fport }} · {{ record.received_at }}</li>{% endif %}{% endfor %}</ul>
-    </noscript>
-    <footer>Live receipt does not confirm database storage. Times are shown in your browser’s timezone.</footer>
-  </main>
+      <p id="loading" class="loading" role="status">Loading stored observations…</p>
+      <p id="empty" class="empty" hidden>No observations yet. Devices appear after their first uplink.</p>
+      {% block content %}{% endblock %}
+      <noscript><h2>Stored observations</h2><p>JavaScript enables navigation and live updates.</p>
+        <ul>{% for record in records %}{% if not existsIn(params, "device") or (record.device_id == params.device and record.application_id == params.application) %}<li>{{ record.device_id }} · FPort {{ record.fport }} · {{ record.received_at }}</li>{% endif %}{% endfor %}</ul>
+      </noscript>
+    </main>
+    <footer class="page-footer">
+      {% if page.view == "overview" %}
+        <span>Tap a device to open it. Take your time.</span>
+      {% else if page.view == "learn" or page.view == "words" or page.view == "network" %}
+        <span>{% if page.view == "learn" %}Tap a measurement on the left to learn more. Take your time.{% else %}Demo values until real network data is connected.{% endif %}</span>
+        <a class="button primary" data-link="{% if page.view == "words" %}lorawan{% else %}dashboard{% endif %}" href="/">{% if page.view == "words" %}Back to details{% else %}Back to dashboard{% endif %}<img src="/assets/images/network-icon-next1.svg" alt=""></a>
+      {% else if page.view == "details" %}
+        <span class="inline-icon"><img src="/assets/images/details-icon-info.svg" alt="">A missing message may mean a problem, but it does not prove the device is broken.</span>
+        <a data-link="words" href="/" class="footer-link">What do these words mean?</a>
+      {% else %}
+        <span class="inline-icon"><img src="/assets/images/dashboard-frame1.svg" alt="">Last updated: <span data-age>—</span><span data-storage class="storage-label"></span></span>
+        <span class="inline-icon"><img src="/assets/images/dashboard-frame2.svg" alt=""><span id="mqtt-status">MQTT status: connecting</span><i class="status-dot" data-connection="mqtt"></i></span>
+      {% endif %}
+    </footer>
+    <p id="connection-note" class="connection-note" role="status" hidden></p>
+  </div>
+  <dialog id="onboarding" aria-labelledby="onboarding-title">
+    <form method="dialog"><h2 id="onboarding-title">{{ site.onboarding.title }}</h2><p>{{ site.onboarding.body }}</p><button class="button primary">Got it</button></form>
+  </dialog>
+  <button type="button" id="mock-notice" class="toast" aria-live="polite" hidden></button>
 </body>
 </html>

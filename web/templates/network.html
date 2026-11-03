@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="network-grid">
+  <article class="panel network-explanation">
+    <h2>Where does a message go?</h2>
+    <div class="network-flow">
+      <div><span class="flow-icon"><img src="/assets/images/network-icon-device.svg" alt=""></span><strong>Our device</strong><small>Measures and sends</small></div><img src="/assets/images/network-icon-next.svg" alt="then">
+      <div><span class="flow-icon"><img src="/assets/images/network-icon-gateway.svg" alt=""></span><strong data-radio="gateway_id">Gateway</strong><small>Passes it on</small></div><img src="/assets/images/network-icon-next.svg" alt="then">
+      <div><span class="flow-icon"><img src="/assets/images/network-icon-cloud.svg" alt=""></span><strong data-radio="network">TTN</strong><small>Network server</small></div><img src="/assets/images/network-icon-next.svg" alt="then">
+      <div><span class="flow-icon"><img src="/assets/images/network-icon-screen.svg" alt=""></span><strong>Dashboard</strong><small>Shows you</small></div>
+    </div>
+    <div class="class-explanation"><h2>What is Class A?</h2><p>Our device sends a message first. Then it opens a short receive window. If no reply arrives, it listens once more, then goes back to sleep to save battery.</p>
+      <div class="receive-windows"><span class="send">Send</span><span class="wait">wait</span><span class="listen">Listen 1</span><span class="wait">wait</span><span class="listen">Listen 2</span><span class="wait">sleep</span></div>
+    </div>
+    <div class="network-summary"><div><p>Network</p><strong data-radio="network">—</strong></div><div><p>Communication</p><strong data-device-status>—</strong></div><div><p>Last message</p><strong data-age>—</strong></div></div>
+  </article>
+  <article class="panel signal-details"><h2>Signal details</h2>
+    <dl class="signal-rows"><div><dt>Signal quality<small>How good the link is</small></dt><dd><span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-signal>Unknown</span></dd></div><div><dt>Signal strength<small>How loud it is (RSSI)</small></dt><dd data-radio="rssi_dbm">—</dd></div><div><dt>Signal clarity<small>How clear it is (SNR)</small></dt><dd data-radio="snr_db">—</dd></div><div><dt>Messages today<small>Mock network count</small></dt><dd data-radio="messages_today">—</dd></div></dl>
+    <div class="thought"><img src="/assets/images/network-icon-bulb.svg" alt=""><div><strong>Think about it</strong><p>What happens to the signal if we move far from the gateway?</p></div></div>
+  </article>
+</div>
+{% endblock %}

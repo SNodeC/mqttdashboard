@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="220" height="230" viewBox="0 0 220 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Art">
+<path id="Tube" d="M110 12C118.284 12 125 18.7157 125 27V163C125 171.284 118.284 178 110 178C101.716 178 95 171.284 95 163V27C95 18.7157 101.716 12 110 12Z" fill="#FFFDF7" stroke-width="4" stroke="#2F6B45"/>
+<rect id="Level" x="102" y="70" width="16" height="120" rx="8" fill="#F4C95D"/>
+<path id="Bulb" d="M138 180C138 195.464 125.464 208 110 208C94.536 208 82 195.464 82 180C82 164.536 94.536 152 110 152C125.464 152 138 164.536 138 180Z" fill="#F4C95D" stroke-width="4" stroke="#2F6B45"/>
+<rect id="Tick 1" x="138" y="30" width="24" height="4" rx="2" fill="#2F6B45"/>
+<rect id="Tick 2" x="138" y="60" width="24" height="4" rx="2" fill="#2F6B45"/>
+<rect id="Tick 3" x="138" y="90" width="24" height="4" rx="2" fill="#2F6B45"/>
+<rect id="Tick 4" x="138" y="120" width="24" height="4" rx="2" fill="#2F6B45"/>
+</g>
+</svg>

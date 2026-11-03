@@ -13,7 +13,7 @@ export function compare(a, b) {
     return time || a.frame_counter - b.frame_counter || identity(a).localeCompare(identity(b));
 }
 
-export function merge(records, incoming) {
+export function merge(records, incoming, retention = {recent: 200, window_seconds: 0}, now = Date.now()) {
     for (const record of incoming) {
         const key = identity(record);
         const previous = records.get(key);
@@ -24,7 +24,8 @@ export function merge(records, incoming) {
     const latest = new Set();
     for (const [index, record] of ordered.entries()) {
         const group = JSON.stringify([record.application_id, record.device_id, record.fport]);
-        if (index >= 200 && latest.has(group)) {
+        const inWindow = retention.window_seconds > 0 && Date.parse(record.received_at) >= now - retention.window_seconds * 1000;
+        if (index >= retention.recent && !inWindow && latest.has(group)) {
             records.delete(identity(record));
         }
         latest.add(group);

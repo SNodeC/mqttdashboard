@@ -1,0 +1,10 @@
+<header class="topbar {{ page.header_variant }}">
+  <div class="topbar-left">{% if page.view != "overview" %}<a class="back-button" data-link="{% if page.view == "device" %}home{% else if page.view == "words" %}lorawan{% else %}dashboard{% endif %}" href="/"><img src="/assets/images/dashboard-vector.svg" alt="">Back</a>{% endif %}</div>
+  <p class="header-title">{{ page.header_title }}</p>
+  <div class="topbar-right">
+    {% if page.header_variant == "compact" %}<button class="mock-button listen" type="button" data-mock="Listen"><img src="/assets/images/network-icon-speaker.svg" alt="">Listen</button>{% endif %}
+    {% if existsIn(params, "device") %}<span class="header-battery" aria-label="Selected device battery charge"><img src="/assets/images/dashboard-icon-battery.svg" alt=""><span data-value="battery">—</span><span>%</span></span>{% endif %}
+    <button class="mock-button help" type="button" data-mock="Help">{% if page.header_variant == "large" %}<img src="/assets/images/home-frame.svg" alt="">{% endif %}Help</button>
+    {% if page.header_variant == "large" %}<img class="avatar" src="/assets/images/avatar.png" alt="" width="48" height="48" aria-hidden="true">{% else %}<span class="initials" aria-hidden="true">M</span>{% endif %}
+  </div>
+</header>

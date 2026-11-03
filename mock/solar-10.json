@@ -1,0 +1,20 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "solar-01"
+  },
+  "received_at": "2026-11-03T12:08:01.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-solar-session",
+    "f_cnt": 10,
+    "f_port": 10,
+    "decoded_payload": {
+      "schema_version": 1,
+      "device_type": "solar",
+      "temperature_c": 28,
+      "humidity_pct": 48
+    }
+  }
+}

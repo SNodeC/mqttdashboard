@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="words-flow" aria-label="Message path">
+  <span><i class="icon-round"><img src="/assets/images/words-icon-device.svg" alt=""></i>Device</span><img src="/assets/images/words-icon-next.svg" alt="then"><span><i class="icon-round"><img src="/assets/images/words-icon-gateway.svg" alt=""></i>Gateway</span><img src="/assets/images/words-icon-next.svg" alt="then"><span><i class="icon-round"><img src="/assets/images/words-icon-cloud.svg" alt=""></i>Network server</span><img src="/assets/images/words-icon-next.svg" alt="then"><span><i class="icon-round"><img src="/assets/images/words-icon-swap.svg" alt=""></i>MQTT</span><img src="/assets/images/words-icon-next.svg" alt="then"><span><i class="icon-round"><img src="/assets/images/words-icon-screen.svg" alt=""></i>Dashboard</span>
+</div>
+<section class="word-grid" aria-label="LoRaWAN glossary">
+  <article class="panel"><h2><span class="icon-round"><img src="/assets/images/words-icon-wifi.svg" alt=""></span>RSSI</h2><p>How loud the signal is. A number closer to zero is stronger.</p><span class="chip receiving">Ours: <span data-radio="rssi_dbm">—</span></span></article>
+  <article class="panel"><h2><span class="icon-round"><img src="/assets/images/words-icon-wave.svg" alt=""></span>SNR</h2><p>How clear the signal is. A higher number means less noise.</p><span class="chip receiving">Ours: <span data-radio="snr_db">—</span></span></article>
+  <article class="panel"><h2><span class="icon-round"><img src="/assets/images/words-icon-layers.svg" alt=""></span>Spreading factor</h2><p>A low number is faster. A high number trades speed for greater reach.</p><span class="chip receiving">Ours: <span data-radio="spreading_factor">—</span></span></article>
+  <article class="panel"><h2><span class="icon-round"><img src="/assets/images/words-icon-antenna.svg" alt=""></span>Frequency</h2><p>The radio channel used, like a station on a radio.</p><span class="chip receiving">Ours: <span data-radio="frequency_hz">—</span></span></article>
+  <article class="panel"><h2><span class="icon-round"><img src="/assets/images/words-icon-hash.svg" alt=""></span>Frame counter</h2><p>Counts messages in a device session. A gap can mean an observation was missed.</p><span class="chip receiving">Ours: <span data-frame-counter>—</span></span></article>
+  <article class="panel"><h2><span class="icon-round"><img src="/assets/images/words-icon-clock.svg" alt=""></span>Class A</h2><p>Sends a message, listens briefly for a reply, then sleeps.</p><span class="chip receiving">Ours: <span data-radio="device_class">—</span></span></article>
+</section>
+{% endblock %}

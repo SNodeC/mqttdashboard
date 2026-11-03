@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="details-grid">
+  <article class="panel device-network"><h2><span class="icon-round"><img src="/assets/images/details-icon-device.svg" alt=""></span>Device and network</h2>
+    <dl class="data-rows technical"><div><dt>Device ID (DevEUI)</dt><dd data-radio="dev_eui">—</dd></div><div><dt>Network</dt><dd data-radio="network">—</dd></div><div><dt>Device class</dt><dd data-radio="device_class">—</dd></div><div><dt>Last uplink</dt><dd data-last-uplink>—</dd></div><div><dt>Gateway</dt><dd data-radio="gateway_id">—</dd></div><div><dt>Frame counter</dt><dd data-frame-counter>—</dd></div></dl>
+    <h3 class="status-heading">Message status</h3>
+    {% include "partials/status-legend.html" %}
+  </article>
+  <div class="details-right">
+    <article class="panel radio-signal"><h2><span class="icon-round"><img src="/assets/images/details-icon-wifi.svg" alt=""></span>Radio signal</h2>
+      <dl class="data-rows technical"><div><dt>RSSI (signal strength)</dt><dd data-radio="rssi_dbm">—</dd></div><div><dt>SNR (signal clarity)</dt><dd data-radio="snr_db">—</dd></div><div><dt>Spreading factor</dt><dd data-radio="spreading_factor">—</dd></div><div><dt>Frequency</dt><dd data-radio="frequency_hz">—</dd></div></dl>
+      <p class="muted">Signal values are from <span data-radio="gateway_id">the reporting gateway</span>.</p>
+    </article>
+    <article class="panel last-payload"><h2><span class="icon-round"><img src="/assets/images/details-icon-layers.svg" alt=""></span>Last payload (decoded)</h2><pre id="last-payload">No decoded payload yet.</pre><span data-storage class="muted"></span></article>
+  </div>
+</div>
+{% endblock %}

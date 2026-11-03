@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="220" height="230" viewBox="0 0 220 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Art">
+<path id="Pipe" d="M21 82H199C206.732 82 213 88.268 213 96V134C213 141.732 206.732 148 199 148H21C13.268 148 7 141.732 7 134V96C7 88.268 13.268 82 21 82Z" fill="#FFFDF7" stroke-width="4" stroke="#2F6B45"/>
+<circle id="Drop 1" cx="30" cy="115" r="10" fill="#F4C95D"/>
+<circle id="Drop 2" cx="68" cy="115" r="10" fill="#F4C95D"/>
+<circle id="Drop 3" cx="106" cy="115" r="10" fill="#F4C95D"/>
+<circle id="Drop 4" cx="144" cy="115" r="10" fill="#F4C95D"/>
+<circle id="Drop 5" cx="182" cy="115" r="10" fill="#F4C95D"/>
+<g id="Arrow">
+<path id="Vector" d="M102.417 178H117.583M110 185.583L117.583 178L110 170.417" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#18352A"/>
+</g>
+</g>
+</svg>

@@ -44,3 +44,14 @@ test("bounded recent history retains the last reading of infrequent FPorts", () 
     assert.equal(latest(records).find(value => value.fport === 30).frame_counter, 0);
     assert.equal(select(records)[0].frame_counter, 230);
 });
+
+test("chart window survives busy-device traffic beyond recent-history count", () => {
+    const records = new Map();
+    const now = Date.parse("2026-11-02T12:12:00Z");
+    const incoming = Array.from({length: 300}, (_, index) => ({...record(20, index, "00"),
+        received_at: new Date(now - (300 - index) * 1000).toISOString()}));
+    merge(records, incoming, {recent: 200, window_seconds: 720}, now);
+    assert.equal(records.size, 300);
+    merge(records, [], {recent: 200, window_seconds: 720}, now + 721000);
+    assert.equal(records.size, 200);
+});

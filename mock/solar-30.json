@@ -1,0 +1,22 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "solar-01"
+  },
+  "received_at": "2026-11-03T12:08:03.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-solar-session",
+    "f_cnt": 30,
+    "f_port": 30,
+    "decoded_payload": {
+      "schema_version": 1,
+      "device_type": "solar",
+      "battery_pct": 82,
+      "battery_v": 12.6,
+      "uptime_s": 3600,
+      "status": "ok"
+    }
+  }
+}

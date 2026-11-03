@@ -7,8 +7,8 @@ MQTTStore alone writes telemetry. Dashboard database access is read-only.
 Mock TTN JSON is provisional; keep fixtures, schema, projection and UI consistent.
 Serve web files from disk. Never embed or bundle them into the executable.
 
-The canonical checkout is this directory, branch `feat/ttn-dashboard`. The remote
-is `git@github.com:SNodeC/mqttdashboard.git`; the initial default branch is `main`.
+The canonical checkout is this directory; the default branch is `main`. Use a
+feature branch for changes. The remote is `git@github.com:SNodeC/mqttdashboard.git`.
 The initial publication places the same root commit on `main` and the task branch.
 Persistent builds use `build/codex/<configuration>`; temporary checks use
 `/tmp/codex/build/ttn-dashboard/<task>`. No additional source checkouts are needed.
@@ -49,3 +49,10 @@ The only shared formatting-module adaptation excludes `checkouts/` and `build/`
 from CMake file discovery. Canonical style/analysis options remain unchanged.
 
 Preserve the global single-return and braced-block rules in new code.
+
+The V2 website replaces the earlier example presentation using the existing host.
+Keep header/card/guide values derived from one selected device and one canonical
+observation collection. Presentation role/FPort bindings and routes belong to the
+external site configuration. Preserve missing observations as gaps, and keep the
+SQL snapshot time window aligned with browser chart retention. No V2-specific C++
+behavior, dependencies or embedded assets are required.

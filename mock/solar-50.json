@@ -1,0 +1,31 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "solar-01"
+  },
+  "received_at": "2026-11-03T12:08:05.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-solar-session",
+    "f_cnt": 50,
+    "f_port": 50,
+    "decoded_payload": {
+      "schema_version": 1,
+      "device_type": "solar",
+      "lorawan": {
+        "configured": true,
+        "dev_eui": "70B3D57ED0012345",
+        "network": "TTN",
+        "device_class": "A",
+        "gateway_id": "gateway-01",
+        "rssi_dbm": -85,
+        "snr_db": 8,
+        "spreading_factor": 7,
+        "frequency_hz": 868100000,
+        "messages_today": 48,
+        "count_date": "2026-11-03"
+      }
+    }
+  }
+}

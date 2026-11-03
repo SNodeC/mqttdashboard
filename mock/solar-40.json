@@ -1,0 +1,26 @@
+{
+  "end_device_ids": {
+    "application_ids": {
+      "application_id": "mock-lab"
+    },
+    "device_id": "solar-01"
+  },
+  "received_at": "2026-11-03T12:08:04.000Z",
+  "uplink_message": {
+    "session_key_id": "mock-solar-session",
+    "f_cnt": 40,
+    "f_port": 40,
+    "decoded_payload": {
+      "schema_version": 1,
+      "device_type": "solar",
+      "gps": {
+        "fix": false,
+        "latitude": -26.2041,
+        "longitude": 28.0473,
+        "fix_received_at": "2026-11-03T12:00:00.000Z",
+        "satellites": 7,
+        "accuracy_m": 5
+      }
+    }
+  }
+}

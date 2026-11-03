@@ -59,7 +59,9 @@
           "enum": [
             10,
             20,
-            30
+            30,
+            40,
+            50
           ]
         },
         "decoded_payload": {
@@ -102,6 +104,7 @@
                       "device_type": {
                         "enum": [
                           "generic",
+                          "solar",
                           "environment",
                           "energy"
                         ]
@@ -174,11 +177,7 @@
                     "type": "number"
                   },
                   "device_type": {
-                    "enum": [
-                      "generic",
-                      "environment",
-                      "energy"
-                    ]
+                    "type": "string"
                   }
                 }
               }
@@ -223,11 +222,153 @@
                     ]
                   },
                   "device_type": {
-                    "enum": [
-                      "generic",
-                      "environment",
-                      "energy"
-                    ]
+                    "type": "string"
+                  },
+                  "battery_pct": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "f_port": {
+                "const": 40
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decoded_payload": {
+                "type": "object",
+                "required": [
+                  "schema_version",
+                  "device_type",
+                  "gps"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "device_type": {
+                    "type": "string"
+                  },
+                  "gps": {
+                    "type": "object",
+                    "required": [
+                      "fix"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "fix": {
+                        "type": "boolean"
+                      },
+                      "latitude": {
+                        "type": "number",
+                        "minimum": -90,
+                        "maximum": 90
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      "fix_received_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "satellites": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "accuracy_m": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "f_port": {
+                "const": 50
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decoded_payload": {
+                "type": "object",
+                "required": [
+                  "schema_version",
+                  "device_type",
+                  "lorawan"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "device_type": {
+                    "type": "string"
+                  },
+                  "lorawan": {
+                    "type": "object",
+                    "required": [
+                      "configured"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "configured": {
+                        "type": "boolean"
+                      },
+                      "dev_eui": {
+                        "type": "string"
+                      },
+                      "network": {
+                        "type": "string"
+                      },
+                      "device_class": {
+                        "type": "string"
+                      },
+                      "gateway_id": {
+                        "type": "string"
+                      },
+                      "rssi_dbm": {
+                        "type": "number"
+                      },
+                      "snr_db": {
+                        "type": "number"
+                      },
+                      "spreading_factor": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 12
+                      },
+                      "frequency_hz": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "messages_today": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "count_date": {
+                        "type": "string",
+                        "format": "date"
+                      }
+                    }
                   }
                 }
               }

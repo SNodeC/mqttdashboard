@@ -8,6 +8,13 @@ The included deployment uses a second local MQTTBroker to simulate TTN. Device i
 
 The owner explicitly accepts the installed SNode.C 2.1.0 static middleware's lack of root containment. For example, `/assets/%2e%2e/model.json` exposes a file outside `public/`; traversal and escaping symlinks can expose other files readable by the server process, including credentials. This remains a known security limitation, not a deployment gate for this project. SNode.C is unchanged, and no application-level path filter is introduced. The containment test remains executable as an expected failure documenting this accepted limitation.
 
+## Raspberry Pi deployment
+
+Follow the [dashboard-only Raspberry Pi deployment guide](deploy/README.md) for
+native builds, local configuration, database/projection integration, browser
+access, systemd startup and updates. It assumes SNode.C and MQTTSuite are already
+installed; it does not install or replace those services.
+
 ## Build
 
 Use an installed SNode.C 2.1 development package, MQTTSuite including MQTTStore, MariaDB Server/client, nlohmann JSON 3.8+, a C++20 compiler and CMake 3.20+. Inja is an explicitly declared upstream Git submodule at `checkouts/inja`, pinned to v3.5.0 (`7d1b4600b68595085a949743331c2e5673f511ea`). It is header-only and consumed through its public include directory; the build does not invoke its packaging/generation scripts or install it. No separate MQTTSuite source checkout or personal include path is used.
@@ -91,7 +98,11 @@ web/
     overview.html                  Device directory and location pages
     device.html                    Shared device dashboard
     device-content.html            Device content include
-    readings.html                  Shared readings/history partial
+    learn.html                     Five measurement guides
+    network.html                   LoRaWAN message path and signal
+    lorawan.html                   Details, status legend and latest payload
+    lorawan-words.html              Contextual glossary
+    partials/                      Header and message status legend
     devices/environment.html       Environment dashboard specialization
     devices/energy.html             Energy dashboard specialization
   public/
@@ -100,6 +111,8 @@ web/
     devices.js                     Discovery and device-profile presentation
     state.js                       One canonical observation collection
     style.css
+    images/                        Local Figma SVG and avatar assets
+    fonts/                         Quicksand variable font and OFL license
 ```
 
 The static mount at `/assets/` selects `public/`; templates and SQL adapter configuration live outside that directory. This directory separation provides no security boundary with the accepted middleware behavior described above. `site.json` is intentionally public and must contain no secrets. HTML, CSS and JavaScript require no bundling, transpilation, framework, CDN or package installation.
@@ -136,7 +149,7 @@ The supplied hierarchy is:
 | `/environment/:application/:device` | Environment device dashboard |
 | `/energy/:application/:device` | Energy device dashboard |
 
-The browser derives directory entries and latest readings from one deduplicated message collection. Device identity includes application and device ID. Profile route parameters are URL-encoded. Device pages filter by both identifiers, while locations and FPort filters refine the example presentation. These filters are presentation, not access-control boundaries: the SSE API serves the configured observation feed. All markup, navigation and client behavior remain replaceable.
+The browser derives directory entries and latest readings from one deduplicated message collection. Device identity includes application and device ID. Profile route parameters are URL-encoded. Device pages filter by both identifiers, while locations refine the example presentation. These filters are presentation, not access-control boundaries: the SSE API serves the configured observation feed. All markup, navigation and client behavior remain replaceable.
 
 ## External projections and the data adapter
 
@@ -161,7 +174,7 @@ Every query returns two columns: an unsigned monotonic row ID and a JSON object 
 
 The live adapter supplies the same fields through configured pointers; the host marks those arrivals `stored: false`. The host requires object-valued `values` and an application FPort in 1–223. Keep identity fields and value meanings consistent between the adapter and projections. The supplied mock contract is documented in `mock/uplink.schema.json`; it is not a binary LoRaWAN decoder. The default mock is scoped to one TTN application/tenant and uses UTC timestamps with three fractional digits for stable source-time ordering.
 
-The snapshot query keeps the latest 200 inserted observations plus the latest per device/FPort, so old devices and infrequently transmitting FPorts remain discoverable. The changes query's row cursor assumes the configured unmodified MQTTStore instance is the sole writer using one database connection. An auto-increment ID is not a general commit-order guarantee across concurrent writers. A different projection scheme must provide an appropriate cursor and snapshot query.
+The snapshot query keeps observations from the last 12 minutes, the latest 200 inserted observations, and the latest per device/FPort, so old devices and infrequently transmitting FPorts remain discoverable. The changes query's row cursor assumes the configured unmodified MQTTStore instance is the sole writer using one database connection. An auto-increment ID is not a general commit-order guarantee across concurrent writers. A different projection scheme must provide an appropriate cursor and snapshot query.
 
 MQTTStore does not validate incoming payloads against the supplied example JSON Schema. Its projection `required` option inserts NULL when a source is missing; SQL constraints enforce required projected fields. Raw storage preserves messages independently when its insert succeeds. Database migrations and replay are explicit administrative operations.
 
@@ -199,4 +212,73 @@ Tests use the existing Python standard-library MariaDB fixture technique and Nod
 
 Coverage includes snapshot/live handoff, writes discovered after arrival, duplicate identities, initial database connection failure, SQL/history failure, database restart and explicit redelivery, read-only grants, editable templates/assets, nested routes/inheritance, escaping, a completely independent replacement site and an alternate projection read model. Browser-state tests cover discovery, device types sharing FPorts, generic fallback, route encoding, filtering, session resets and bounded history. Application C++ growth is measured against the 407-line starting point; its approved ceiling is 507 lines. The unchanged Inja submodule is accounted for separately as the explicitly approved dependency.
 
-Current local verification: 13 integration cases pass; the static-root confinement case is an expected failure documenting the owner's acceptance of the installed SNode.C 2.1.0 behavior. Encoded and literal traversal and an escaping symlink were separately confirmed to expose files outside the static root. All eight browser-state cases, JavaScript syntax and C++ formatting pass. Browser interaction also confirmed that an unconfigured device appears live in the overview and opens its type-specific dashboard. The reusable-host change adds 52 application C++ lines (407 to 459), 402 web-package lines (563 to 965), and separately 151 test lines (452 to 603). Website growth supplies the externally replaceable presentation and device profiles; C++ growth supplies external template/routes/read-model handling and correct asynchronous connection/request ownership.
+The V2 change leaves application C++ unchanged at 459 lines (52 above the original
+407-line baseline, within the approved 507-line maximum). It replaces the previous
+example web presentation; it does not introduce a second renderer or message store.
+
+## Figma V2 example
+
+The supplied website implements the V2 Home, device dashboard, five measurement
+guides, network information, LoRaWAN details and glossary from the supplied Figma
+file. The original SVG illustrations/icons and exported decorative avatar are
+served locally. Quicksand is distributed with its OFL license; no runtime CDN is
+used. Asset provenance is recorded in `web/ASSETS.md`.
+
+Additional routes beneath `/devices/:application/:device` are `/network`,
+`/lorawan`, `/learn/lorawan`, and `/learn/{voltage,current,power,battery,temperature}`.
+Back links retain the selected device and return to its profile dashboard. The
+header battery and every battery card resolve the same selected-device `battery`
+role. Home has no battery indicator. Listen and Help display dismissible mock
+notices; the avatar is decorative. Add device opens instructions explaining that
+an uplink creates the device automatically.
+
+The `solar` profile demonstrates the provisional V2 payload contract:
+
+| Fixture / FPort | Decoded fields |
+| --- | --- |
+| `mock/solar-10.json` / 10 | `temperature_c`, `humidity_pct` |
+| `mock/solar-20.json` / 20 | `voltage_v`, `current_a`, `power_w` |
+| `mock/solar-30.json` / 30 | `battery_pct`, `battery_v`, `uptime_s`, `status` |
+| `mock/solar-40.json` / 40 | `gps`: current fix flag and last known coordinates/time |
+| `mock/solar-50.json` / 50 | `lorawan`: configuration, device/network IDs and radio observations |
+
+Publish these five files to `v3/mock-lab@ttn/devices/solar-01/up` with the MQTTCLI
+command above. For each new observation update `received_at` and `f_cnt` before
+publishing. Use UTC timestamps with three fractional digits; the static fixtures
+retain fixed dates for reproducible tests. `fix_received_at` is the last successful
+GPS fix time and can be older than the uplink. `count_date` is the UTC date to which
+the mock `messages_today` belongs. These optional GPS/radio objects are projected
+unchanged by the existing MQTTStore mapping; no table migration is needed.
+
+Presentation roles in `site.json` map a measurement to its device profile's FPort
+and field. Other device profiles retain their original FPort meanings. Missing
+fields display a dash; zero remains a valid reading. Device status comes from
+uplink freshness (180 seconds by default) and an explicit mock configuration flag,
+independently of the MQTT, database and SSE service indicators. A one-second browser
+clock updates ages and stale status while publishers are silent.
+
+The voltage chart uses twelve actual one-minute observation buckets. Missing
+buckets remain visible gaps, never fabricated zero readings. The SQL snapshot and
+browser retention both preserve a twelve-minute window in addition to recent
+history and each device/FPort's latest observation. Change both policies together
+when changing the chart window; `/api/history` remains bounded to 200 rows. Source
+time, rather than arrival time, determines chart placement.
+
+GPS maps are illustrations, not a mapping service. A failed/stale GPS fix leaves
+known coordinates explicitly labelled as the last known fix. Radio fields and
+"Messages today" are mock payload observations, not counts measured by the host or
+fetched from TTN. The example signal-quality heuristic uses RSSI thresholds of
+−100/−115 dBm and does not establish delivery reliability. Class A copy describes
+the conditional second receive window; frame-counter gaps do not prove RF loss.
+
+The V2 checks exercise the real broker/bridge/store/database/SSE pipeline, all
+external routes, editable deployment templates, all ten schema fixtures, selected
+profile roles, zero/missing values, stale transitions, chart gaps and retention.
+The accepted static-root confinement limitation remains an expected failure.
+Browser checks cover all ten views, Add device, mock Listen/Help, live eighth-device
+discovery, live battery changes, storage confirmation and desktop/mobile layouts.
+
+Local V2 verification: 15 pipeline cases pass, with the accepted containment case
+recorded as an expected failure; all 12 browser-state cases, JavaScript syntax and
+C++ formatting pass. The pipeline includes 220 chart-window messages sent through
+MQTTBridge and MQTTStore. Schema validation passes for all ten mock uplink files.

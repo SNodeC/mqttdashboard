@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+{% set lesson = at(site.lessons, page.metric) %}
+<div class="learn-grid">
+  <nav class="measurement-tabs" aria-label="Measurement guides">
+    {% for key in site.lesson_order %}{% set item = at(site.lessons, key) %}
+    <a class="measurement-tab{% if key == page.metric %} selected{% endif %}" data-link="{{ key }}" href="/"{% if key == page.metric %} aria-current="page"{% endif %}><span class="icon-round"><img src="/assets/images/{{ item.icon }}" alt=""></span>{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+  <article class="panel explainer">
+    <figure class="lesson-picture">
+      {% if page.metric == "voltage" %}
+        <div class="voltage-art" aria-hidden="true"><span class="tank-leg left"></span><span class="tank-leg right"></span><span class="tank"></span><span class="water"></span><img class="arrow-down" src="/assets/images/voltage-arrow-down.svg" alt=""><span class="bracket"></span><span class="push-label">Push</span><span class="pipe"></span><img class="arrow-flow" src="/assets/images/voltage-arrow-flow.svg" alt=""><span class="ground"></span></div>
+      {% else if page.metric == "current" %}
+        <img class="lesson-art" src="/assets/images/current-art.svg" alt="Water drops flowing through a pipe">
+      {% else if page.metric == "power" %}
+        <div class="power-art"><div><span>Voltage</span><strong><span data-value="voltage">—</span> V</strong></div><img src="/assets/images/power-icon-times.svg" alt="times"><div><span>Current</span><strong><span data-value="current">—</span> A</strong></div><span class="equals">=</span><div class="power-result"><span>Power</span><strong><span data-value="power">—</span> W</strong></div></div>
+      {% else if page.metric == "battery" %}
+        <div class="battery-art" aria-label="Battery charge illustration"><span class="battery-cap"></span><div class="battery-outline"><i></i><i></i><i></i><i></i><i></i></div></div>
+      {% else %}
+        <img class="lesson-art" src="/assets/images/temperature-art.svg" alt="A thermometer, with a higher line meaning hotter">
+      {% endif %}
+      <figcaption>{{ lesson.caption }}</figcaption>
+    </figure>
+    <div class="lesson-explanation">
+      <h2>{{ lesson.explanation }}</h2>
+      {% for point in lesson.points %}<p class="lesson-point"><span class="icon-square"><img src="/assets/images/{{ at(lesson.point_icons, loop.index) }}" alt=""></span>{{ point }}</p>{% endfor %}
+      <div class="lesson-reading"><img src="/assets/images/{{ lesson.icon }}" alt=""><div><span>On our system now:</span><strong><span data-value="{{ page.metric }}">—</span> <span data-unit="{{ page.metric }}"></span></strong>{% if page.metric == "battery" %}<p class="muted">This is an estimate, so use it as a guide.</p>{% endif %}</div></div>
+      <div class="thought"><img src="/assets/images/voltage-icon-bulb.svg" alt=""><div><strong>Think about it</strong><p>{{ lesson.question }}</p></div></div>
+    </div>
+  </article>
+</div>
+{% endblock %}
