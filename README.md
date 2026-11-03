@@ -216,6 +216,13 @@ The V2 change leaves application C++ unchanged at 459 lines (52 above the origin
 407-line baseline, within the approved 507-line maximum). It replaces the previous
 example web presentation; it does not introduce a second renderer or message store.
 
+## MQTT message and topic reference
+
+See the [complete MQTT contract](mock/README.md) for exact receiving topics, the
+shared uplink envelope, all ten complete fixture messages, every GPS/radio field,
+profile-dependent FPort meanings and instructions for changing applications.
+The [Pi deployment guide](deploy/README.md) links the same reference.
+
 ## Figma V2 example
 
 The supplied website implements the V2 Home, device dashboard, five measurement

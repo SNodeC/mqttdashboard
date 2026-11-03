@@ -39,6 +39,10 @@ if you also update the service's paths.
 
 ## 2. Check the existing database and MQTTStore projection
 
+The [MQTT topic and JSON reference](../mock/README.md) describes every expected
+message, all receiving filters and the complete provisional payload contract.
+Use it when configuring the existing bridge, MQTTStore or device decoder.
+
 Skip schema creation if this dashboard schema is already provisioned. Otherwise,
 as the MariaDB administrator, from the checkout run:
 
